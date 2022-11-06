@@ -1,9 +1,8 @@
-import React from 'react'
-
+import React from "react";
+import Sidebar from "../Components/Sidebar";
+import { Flex } from "@chakra-ui/react";
 const Home = () => {
-  return (
-    <div>Home</div>
-  )
-}
+  return <Sidebar />;
+};
 
-export default Home
+export default Home;

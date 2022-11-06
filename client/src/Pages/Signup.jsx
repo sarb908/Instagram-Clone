@@ -25,7 +25,7 @@ export default function Signup() {
 
   return (
     <Flex minH={"100vh"} align={"center"} justify={"center"} bg={"#fafafa"}>
-      <Box bg={"white"} w="350px" boxShadow={"xs"} p={8}>
+      <Box bg={"white"} w="400px" boxShadow={"xs"} p={10}>
         <Stack spacing={4}>
           <Center>
             <Image w="175px" h="50px" src={instaLogo} alt="Logo" />
@@ -55,28 +55,28 @@ export default function Signup() {
             </Text>
             <Divider />
           </Flex>
-          <HStack>
-            <Box>
-              <FormControl id="firstName" isRequired>
-                <FormLabel>First Name</FormLabel>
-                <Input type="text" />
-              </FormControl>
-            </Box>
-            <Box>
-              <FormControl id="lastName">
-                <FormLabel>Last Name</FormLabel>
-                <Input type="text" />
-              </FormControl>
-            </Box>
-          </HStack>
+
+          <Box>
+            <Input
+              type="text"
+              bg="#fafafa"
+              placeholder="Mobile Number or Email"
+            />
+          </Box>
+          <Box>
+            <Input type="text" bg="#fafafa" placeholder="Full Name" />
+          </Box>
+
           <FormControl id="email" isRequired>
-            <FormLabel>Email address</FormLabel>
-            <Input type="email" />
+            <Input type="email" bg="#fafafa" placeholder="Username" />
           </FormControl>
           <FormControl id="password" isRequired>
-            <FormLabel>Password</FormLabel>
             <InputGroup>
-              <Input type={showPassword ? "text" : "password"} />
+              <Input
+                placeholder="Password"
+                bg="#fafafa"
+                type={showPassword ? "text" : "password"}
+              />
               <InputRightElement h={"full"}>
                 <Button
                   variant={"ghost"}
@@ -92,8 +92,8 @@ export default function Signup() {
           <Stack spacing={10} pt={2}>
             <Button
               loadingText="Submitting"
-              size="lg"
-              bg={"blue.400"}
+              size="md"
+              bg={"#1da1f2"}
               color={"white"}
               _hover={{
                 bg: "blue.500",

@@ -4,7 +4,7 @@ import MainRoutes from "./Pages/MainRoutes";
 
 function App() {
   return (
-    <Box>
+    <Box w="100%">
       <Navbar />
       <MainRoutes />
     </Box>
