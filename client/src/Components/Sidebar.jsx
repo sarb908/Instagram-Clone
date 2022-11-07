@@ -1,4 +1,5 @@
 import React, { ReactNode } from "react";
+import AddPostModal from "./../Components/AddPostModal";
 import {
   IconButton,
   Box,
@@ -30,48 +31,40 @@ import instalogo from "./../Assets/InstaLogo.png";
 import { CgAddR } from "react-icons/cg";
 const LinkItems = [
   { name: "Home", icon: FiHome },
+  { name: "Create", icon: CgAddR },
   { name: "Search", icon: BiSearchAlt2 },
   { name: "Explore", icon: FiCompass },
   { name: "Messages", icon: RiMessengerLine },
   { name: "Notifications", icon: AiOutlineHeart },
-  { name: "Create", icon: CgAddR },
 ];
 
 export default function Sidebar({ children }) {
-  const { isOpen, onOpen, onClose } = useDisclosure();
   return (
-    <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}>
-      <SidebarContent
-        onClose={() => onClose}
-        display={{ base: "none", md: "block" }}
-      />
-      <Drawer
-        autoFocus={false}
-        isOpen={isOpen}
-        placement="left"
-        onClose={onClose}
-        returnFocusOnClose={false}
-        onOverlayClick={onClose}
-        size="full"
-      >
-        <DrawerContent>
-          <SidebarContent onClose={onClose} />
-        </DrawerContent>
-      </Drawer>
-      {/* mobilenav */}
-      <MobileNav display={{ base: "flex", md: "none" }} onOpen={onOpen} />
-      <Box ml={{ base: 0, md: 60 }} p="4">
-        {children}
+    <>
+      {" "}
+      <Box minH="100vh" bg={"white"}>
+        <SidebarContent display={{ base: "none", md: "block" }} />
+        <Drawer autoFocus={false} placement="left" size="full">
+          <DrawerContent>
+            <SidebarContent />
+          </DrawerContent>
+        </Drawer>
+
+        <Box ml={{ base: 0, md: 60 }} p="4">
+          {children}
+        </Box>
       </Box>
-    </Box>
+    </>
   );
 }
 
-const SidebarContent = ({ onClose, ...rest }) => {
+const SidebarContent = ({ ...rest }) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <Box
-      bg={useColorModeValue("white", "gray.900")}
+      bg={useColorModeValue("white", "white")}
       borderRight="1px"
+      s
       borderRightColor={useColorModeValue("gray.200", "gray.700")}
       w={{ base: "full", md: 60 }}
       pos="fixed"
@@ -84,7 +77,11 @@ const SidebarContent = ({ onClose, ...rest }) => {
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
       {LinkItems.map((link) => (
-        <NavItem key={link.name} icon={link.icon}>
+        <NavItem
+          key={link.name}
+          onClick={link.name == "Create" && onOpen}
+          icon={link.icon}
+        >
           {link.name}
         </NavItem>
       ))}
@@ -98,11 +95,12 @@ const SidebarContent = ({ onClose, ...rest }) => {
         _hover={{
           bg: "#fafafa",
         }}
-        mt="auto"
+        mb="auto"
       >
         {<Icon mr="4" w={7} h={7} fontSize="13" as={AiOutlineMenu} />}
         More
       </Flex>
+      <AddPostModal isOpen={isOpen} onOpen={onOpen} onClose={onClose} />
     </Box>
   );
 };
@@ -130,32 +128,5 @@ const NavItem = ({ icon, children, ...rest }) => {
         {children}
       </Flex>
     </Link>
-  );
-};
-
-const MobileNav = ({ onOpen, ...rest }) => {
-  return (
-    <Flex
-      ml={{ base: 0, md: 60 }}
-      px={{ base: 4, md: 24 }}
-      height="20"
-      alignItems="center"
-      bg={useColorModeValue("white", "gray.900")}
-      borderBottomWidth="1px"
-      borderBottomColor={useColorModeValue("gray.200", "gray.700")}
-      justifyContent="flex-start"
-      {...rest}
-    >
-      <IconButton
-        variant="outline"
-        onClick={onOpen}
-        aria-label="open menu"
-        icon={<FiMenu />}
-      />
-
-      <Text fontSize="2xl" ml="8" fontFamily="monospace" fontWeight="bold">
-        Logo
-      </Text>
-    </Flex>
   );
 };

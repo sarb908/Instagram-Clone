@@ -133,15 +133,13 @@ function Post({ post, user }) {
       {/* ADD COMMENT */}
       <AddCommentContainer>
         <div>
-          <MdSentimentVerySatisfied style={{ height: 30 }} />
+          <MdSentimentVerySatisfied size={22} />
           <form onSubmit={addComment}>
             <input
               value={comment}
               type="text"
               placeholder="Add comment"
-              onChange={(e) => {
-                setComment(e.target.value);
-              }}
+              onChange={(e) => setComment(e.target.value)}
             />
             <button type="submit">Send</button>
           </form>
