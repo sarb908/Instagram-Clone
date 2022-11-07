@@ -11,7 +11,7 @@ import { RiChat3Line } from "react-icons/ri";
 import { FaPaperPlane } from "react-icons/fa";
 import { MdSentimentVerySatisfied } from "react-icons/md";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -21,9 +21,8 @@ import {
 } from "../Redux/AppReducer/actions";
 
 function Post({ item }) {
+  const name = useSelector((state) => state.authReducer.name);
   const [comment, setComment] = useState("");
-  const [likes, setLikes] = useState([]);
-  const [hasLiked, setHasLiked] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -39,7 +38,7 @@ function Post({ item }) {
   };
   const addComment = (e) => {
     e.preventDefault();
-    let temp = { userName: "dummyName", comment };
+    let temp = { userName: name, comment };
     dispatch(
       updatePostHandler({
         status: item?.status,
@@ -85,7 +84,14 @@ function Post({ item }) {
       <PostCoverPhoto src={item?.img} />
       {/* POST OPTIONS */}
       <PostOptions>
-        <div style={{ display: "flex", gap: 15, alignItems: "center" }}>
+        <div
+          style={{
+            display: "flex",
+            gap: 15,
+            alignItems: "center",
+            cursor: "pointer",
+          }}
+        >
           {item?.status ? (
             <BsHeartFill
               size={36}
@@ -138,7 +144,7 @@ function Post({ item }) {
           ))}
         </CommentsContainer>
       )}
-      {/* {post && <div style={{ padding: 10, color: "gray", fontSize: 12 }}></div>} */}
+
       {/* ADD COMMENT */}
       <AddCommentContainer>
         <div>
@@ -226,11 +232,10 @@ const CommentsContainer = styled.div`
   overflow-y: auto;
   overflow-x: hidden;
 
-  margin-left: 15px;
+  margin: 1px 5px 10px 15px;
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin-right: 5px;
 
   ::-webkit-scrollbar {
     width: 10px;

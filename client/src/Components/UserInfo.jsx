@@ -2,24 +2,29 @@ import React from "react";
 import styled from "styled-components";
 
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
-function UserInfo({ user }) {
-  const navigate = useNavigate();
+function UserInfo() {
   const dispatch = useDispatch();
-
+  const name = useSelector((state) => state.authReducer?.name);
+  const logoutHandler = () => {
+    dispatch({ type: "LOGOUT" });
+  };
   return (
     <CardWrapper>
       <UserInfoWrap>
-        <img src={user?.photoURL} alt="" />
+        <img
+          src={`https://t4.ftcdn.net/jpg/03/32/59/65/240_F_332596535_lAdLhf6KzbW6PWXBWeIFTovTii1drkbT.jpg`}
+          alt=""
+        />
         <section>
           <h5>
-            <strong>{"sarbjot"}</strong>
+            <strong>{name ? name : "sarbjot"}</strong>
           </h5>
-          <p>Welcome to the gram</p>
+          <p>Welcome to the sarbInstgram</p>
         </section>
       </UserInfoWrap>
-      <h4>SignOut</h4>
+      <h4 onClick={logoutHandler}>Sign out</h4>
     </CardWrapper>
   );
 }

@@ -4,7 +4,7 @@ import * as types from "./actionTypes";
 export const loginHandler = (data) => (dispatch) => {
   dispatch({ type: types.SIGNIN_LOADING });
   return axios
-    .post(`https://sarbmock12.herokuapp.com/login`, data)
+    .post(`http://localhost:8080/login`, data)
     .then((d) => {
       console.log(d);
       return dispatch({
@@ -23,7 +23,7 @@ export const signupHandler = (data) => (dispatch) => {
   dispatch({ type: types.SIGNIN_LOADING });
 
   return axios
-    .post("https://sarbmock12.herokuapp.com/signup", data)
+    .post("http://localhost:8080/signup", data)
     .then((r) => {
       console.log(r);
       return dispatch({
@@ -32,5 +32,6 @@ export const signupHandler = (data) => (dispatch) => {
     })
     .catch((err) => {
       console.log(err);
+      return dispatch({ type: types.SIGNIN_ERROR });
     });
 };

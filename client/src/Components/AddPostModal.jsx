@@ -14,12 +14,11 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { addPostsHandler } from "../Redux/AppReducer/actions";
 export default function AddPostModal({ isOpen, onClose, onOpen }) {
+  const name = useSelector((state) => state.authReducer.name);
   const dispatch = useDispatch();
-  const [user] = useState("");
   const filePickerRef = useRef(null);
   const [caption, setCaption] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
-  const [loading, setLoading] = useState(false);
 
   const modalContentRef = useRef();
 
@@ -29,8 +28,11 @@ export default function AddPostModal({ isOpen, onClose, onOpen }) {
     const formData = new FormData();
     formData.append("photo", filePickerRef.current.files[0]);
     formData.append("caption", caption);
+    formData.append("userName", name);
+
     dispatch(addPostsHandler(formData)).then((r) => {
       console.log(r);
+
       onClose();
     });
   };
@@ -111,24 +113,15 @@ export default function AddPostModal({ isOpen, onClose, onOpen }) {
                 />
                 {/* FINAL SUBMIT Button */}
 
-                {loading ? (
-                  //   <Spinner
-                  //     name="ball-spin-fade-loader"
-                  //     color="purple"
-                  //     fadeIn="none"
-                  //   />
-                  <div></div>
-                ) : (
-                  <Button
-                    type="submit"
-                    disabled={!selectedFile}
-                    onClick={uploadPost}
-                    colorScheme="blue"
-                    className={selectedFile ? "selected" : "notSelected"}
-                  >
-                    POST
-                  </Button>
-                )}
+                <Button
+                  type="submit"
+                  disabled={!selectedFile}
+                  onClick={uploadPost}
+                  colorScheme="blue"
+                  className={selectedFile ? "selected" : "notSelected"}
+                >
+                  POST
+                </Button>
               </ContentContainer>
             </ModalContentWrapper>
           </ModalBody>

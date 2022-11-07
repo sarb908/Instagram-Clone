@@ -76,15 +76,17 @@ const SidebarContent = ({ ...rest }) => {
 
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
-      {LinkItems.map((link) => (
-        <NavItem
-          key={link.name}
-          onClick={link.name == "Create" && onOpen}
-          icon={link.icon}
-        >
-          {link.name}
-        </NavItem>
-      ))}
+      {LinkItems.map((link) =>
+        link.name == "Create" ? (
+          <NavItem key={link.name} onClick={onOpen} icon={link.icon}>
+            {link.name}
+          </NavItem>
+        ) : (
+          <NavItem key={link.name} onClick={onOpen} icon={link.icon}>
+            {link.name}
+          </NavItem>
+        )
+      )}
       <Flex
         align="center"
         p="5"

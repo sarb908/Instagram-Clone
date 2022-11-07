@@ -19,10 +19,52 @@ import { useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { FaFacebook } from "react-icons/fa";
 import instaLogo from "./../Assets/InstaLogo.png";
-
+import { useDispatch } from "react-redux";
+import { signupHandler } from "../Redux/AuthReducer/actions";
+import { useToast } from "@chakra-ui/react";
+import * as types from "./../Redux/AuthReducer/actionTypes";
+import { useNavigate } from "react-router-dom";
 export default function Signup() {
+  const navigate = useNavigate();
+  const toast = useToast();
+  const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
-
+  const [data, setData] = useState({ name: "", password: "", email: "" });
+  const changeHandler = (e) => {
+    const { name, value } = e.target;
+    setData((prev) => {
+      return { ...prev, [name]: value };
+    });
+  };
+  const submitHandler = () => {
+    if (!data.name || !data.password || !data.email) {
+      toast({
+        title: "Invlid Creds",
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
+      return;
+    }
+    dispatch(signupHandler(data)).then((r) => {
+      if (r.type == types.SIGNUP_SUCCESS) {
+        toast({
+          title: "Account created.",
+          status: "success",
+          duration: 9000,
+          isClosable: true,
+        });
+        navigate("/login");
+      } else {
+        toast({
+          title: "Something went wrong",
+          status: "error",
+          duration: 9000,
+          isClosable: true,
+        });
+      }
+    });
+  };
   return (
     <Flex minH={"100vh"} align={"center"} justify={"center"} bg={"#fafafa"}>
       <Box bg={"white"} w="400px" boxShadow={"xs"} p={10}>
@@ -61,10 +103,20 @@ export default function Signup() {
               type="text"
               bg="#fafafa"
               placeholder="Mobile Number or Email"
+              name="email"
+              value={data.email}
+              onChange={changeHandler}
             />
           </Box>
           <Box>
-            <Input type="text" bg="#fafafa" placeholder="Full Name" />
+            <Input
+              type="text"
+              bg="#fafafa"
+              placeholder="Full Name"
+              name="name"
+              value={data.name}
+              onChange={changeHandler}
+            />
           </Box>
 
           <FormControl id="email" isRequired>
@@ -73,6 +125,9 @@ export default function Signup() {
           <FormControl id="password" isRequired>
             <InputGroup>
               <Input
+                name="password"
+                value={data.password}
+                onChange={changeHandler}
                 placeholder="Password"
                 bg="#fafafa"
                 type={showPassword ? "text" : "password"}
@@ -98,12 +153,13 @@ export default function Signup() {
               _hover={{
                 bg: "blue.500",
               }}
+              onClick={submitHandler}
             >
               Sign up
             </Button>
           </Stack>
           <Stack pt={6}>
-            <Text align={"center"}>
+            <Text align={"center"} onClick={() => navigate("/login")}>
               Already a user? <Link color={"blue.400"}>Login</Link>
             </Text>
           </Stack>
