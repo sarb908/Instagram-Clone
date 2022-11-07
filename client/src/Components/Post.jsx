@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   BsTrash,
   BsThreeDots,
@@ -6,15 +6,17 @@ import {
   BsHeartFill,
   BsBookmark,
 } from "react-icons/bs";
+import styled from "styled-components";
+
 import { AiOutlineClose } from "react-icons/ai";
 import { RiChat3Line } from "react-icons/ri";
 import { FaPaperPlane } from "react-icons/fa";
 import { MdSentimentVerySatisfied } from "react-icons/md";
 
 import { useDispatch, useSelector } from "react-redux";
-import styled from "styled-components";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import {
   deletePostHandler,
   updatePostHandler,

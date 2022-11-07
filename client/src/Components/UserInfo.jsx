@@ -1,15 +1,16 @@
 import React from "react";
 import styled from "styled-components";
 
-import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 function UserInfo() {
-  const dispatch = useDispatch();
   const name = useSelector((state) => state.authReducer?.name);
+  const dispatch = useDispatch();
+
   const logoutHandler = () => {
     dispatch({ type: "LOGOUT" });
   };
+
   return (
     <CardWrapper>
       <UserInfoWrap>

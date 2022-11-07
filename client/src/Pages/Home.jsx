@@ -8,7 +8,6 @@ const Home = () => {
   return (
     <Flex justify={"space-between"}>
       <Sidebar />
-
       <Feeds />
       <Suggestions />
     </Flex>

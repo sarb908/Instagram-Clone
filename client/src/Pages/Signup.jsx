@@ -1,11 +1,10 @@
+import { useState } from "react";
 import {
   Flex,
   Box,
   FormControl,
-  FormLabel,
   Input,
   InputGroup,
-  HStack,
   InputRightElement,
   Stack,
   Button,
@@ -15,27 +14,31 @@ import {
   Center,
   Divider,
 } from "@chakra-ui/react";
-import { useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { FaFacebook } from "react-icons/fa";
 import instaLogo from "./../Assets/InstaLogo.png";
-import { useDispatch } from "react-redux";
-import { signupHandler } from "../Redux/AuthReducer/actions";
 import { useToast } from "@chakra-ui/react";
-import * as types from "./../Redux/AuthReducer/actionTypes";
+
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+
+import { signupHandler } from "../Redux/AuthReducer/actions";
+import * as types from "./../Redux/AuthReducer/actionTypes";
+
 export default function Signup() {
   const navigate = useNavigate();
   const toast = useToast();
   const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
   const [data, setData] = useState({ name: "", password: "", email: "" });
+
   const changeHandler = (e) => {
     const { name, value } = e.target;
     setData((prev) => {
       return { ...prev, [name]: value };
     });
   };
+
   const submitHandler = () => {
     if (!data.name || !data.password || !data.email) {
       toast({
@@ -46,6 +49,7 @@ export default function Signup() {
       });
       return;
     }
+
     dispatch(signupHandler(data)).then((r) => {
       if (r.type == types.SIGNUP_SUCCESS) {
         toast({
@@ -65,6 +69,7 @@ export default function Signup() {
       }
     });
   };
+
   return (
     <Flex minH={"100vh"} align={"center"} justify={"center"} bg={"#fafafa"}>
       <Box bg={"white"} w="400px" boxShadow={"xs"} p={10}>

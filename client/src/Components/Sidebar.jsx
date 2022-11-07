@@ -1,7 +1,6 @@
-import React, { ReactNode } from "react";
+import React from "react";
 import AddPostModal from "./../Components/AddPostModal";
 import {
-  IconButton,
   Box,
   CloseButton,
   Flex,
@@ -10,25 +9,16 @@ import {
   Link,
   Drawer,
   DrawerContent,
-  Text,
   useDisclosure,
   Image,
-  FlexProps,
 } from "@chakra-ui/react";
-import {
-  FiHome,
-  FiTrendingUp,
-  FiCompass,
-  FiStar,
-  FiSettings,
-  FiMenu,
-} from "react-icons/fi";
+import { FiHome, FiCompass } from "react-icons/fi";
 import { BiSearchAlt2 } from "react-icons/bi";
 import { RiMessengerLine } from "react-icons/ri";
 import { AiOutlineHeart, AiOutlineMenu } from "react-icons/ai";
-import { ReactText } from "react";
 import instalogo from "./../Assets/InstaLogo.png";
 import { CgAddR } from "react-icons/cg";
+
 const LinkItems = [
   { name: "Home", icon: FiHome },
   { name: "Create", icon: CgAddR },
@@ -40,21 +30,18 @@ const LinkItems = [
 
 export default function Sidebar({ children }) {
   return (
-    <>
-      {" "}
-      <Box minH="100vh" bg={"white"}>
-        <SidebarContent display={{ base: "none", md: "block" }} />
-        <Drawer autoFocus={false} placement="left" size="full">
-          <DrawerContent>
-            <SidebarContent />
-          </DrawerContent>
-        </Drawer>
+    <Box minH="100vh" bg={"white"}>
+      <SidebarContent display={{ base: "none", md: "block" }} />
+      <Drawer autoFocus={false} placement="left" size="full">
+        <DrawerContent>
+          <SidebarContent />
+        </DrawerContent>
+      </Drawer>
 
-        <Box ml={{ base: 0, md: 60 }} p="4">
-          {children}
-        </Box>
+      <Box ml={{ base: 0, md: 60 }} p="4">
+        {children}
       </Box>
-    </>
+    </Box>
   );
 }
 

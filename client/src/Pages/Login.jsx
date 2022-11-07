@@ -1,12 +1,10 @@
-import React from "react";
+import { useState } from "react";
 import {
   Flex,
   Box,
   FormControl,
-  FormLabel,
   Input,
   InputGroup,
-  HStack,
   InputRightElement,
   Stack,
   Button,
@@ -17,20 +15,23 @@ import {
   Divider,
   useToast,
 } from "@chakra-ui/react";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { FaFacebook } from "react-icons/fa";
 import instaLogo from "./../Assets/InstaLogo.png";
+
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+
 import { loginHandler } from "../Redux/AuthReducer/actions";
 import * as types from "./../Redux/AuthReducer/actionTypes";
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [data, setData] = useState({ email: "", password: "" });
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const toast = useToast();
-  const [data, setData] = useState({ email: "", password: "" });
+
   const changeHandler = (e) => {
     const { name, value } = e.target;
     setData((prev) => {

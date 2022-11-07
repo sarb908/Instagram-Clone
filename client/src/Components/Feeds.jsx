@@ -14,7 +14,7 @@ const Feeds = () => {
     }
   }, [posts]);
   return (
-    <Flex direction={"column"}>
+    <Flex direction={"column"} pt="15px">
       {posts.map((el) => (
         <Post key={el?._id} item={el} />
       ))}

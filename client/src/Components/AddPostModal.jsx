@@ -1,7 +1,5 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
-import axios from "axios";
-import { FcGallery } from "react-icons/fc";
 import {
   Modal,
   ModalOverlay,
@@ -11,28 +9,26 @@ import {
   ModalCloseButton,
   Button,
 } from "@chakra-ui/react";
+import { FcGallery } from "react-icons/fc";
+
 import { useDispatch, useSelector } from "react-redux";
 import { addPostsHandler } from "../Redux/AppReducer/actions";
+
 export default function AddPostModal({ isOpen, onClose, onOpen }) {
-  const name = useSelector((state) => state.authReducer.name);
   const dispatch = useDispatch();
-  const filePickerRef = useRef(null);
+  const name = useSelector((state) => state.authReducer.name);
   const [caption, setCaption] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
-
+  const filePickerRef = useRef(null);
   const modalContentRef = useRef();
 
   const uploadPost = async () => {
-    console.log(filePickerRef.current.files[0]);
-
     const formData = new FormData();
     formData.append("photo", filePickerRef.current.files[0]);
     formData.append("caption", caption);
     formData.append("userName", name);
 
     dispatch(addPostsHandler(formData)).then((r) => {
-      console.log(r);
-
       onClose();
     });
   };
@@ -130,17 +126,7 @@ export default function AddPostModal({ isOpen, onClose, onOpen }) {
     </>
   );
 }
-const AddPostWrapper = styled.div`
-  position: absolute;
-  width: 100%;
-  height: 100vh;
-  top: 0;
-  left: 0;
-  right: 0;
-  background-color: rgba(0, 0, 0, 0.7);
-  display: flex;
-  z-index: 12;
-`;
+
 const ModalContentWrapper = styled.div`
   display: flex;
   margin: auto;
