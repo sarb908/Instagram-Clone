@@ -98,7 +98,7 @@ const SidebarContent = ({ onClose, ...rest }) => {
         _hover={{
           bg: "#fafafa",
         }}
-        mt="20px"
+        mt="auto"
       >
         {<Icon mr="4" w={7} h={7} fontSize="13" as={AiOutlineMenu} />}
         More
