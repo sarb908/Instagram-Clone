@@ -58,7 +58,7 @@ Using HTTPS
 - Open terminal on your workspace with
 
 ```
-cd /home/workspace/Weather-App
+cd /home/workspace/Instagram-Clone
 ```
 
 ## Install
