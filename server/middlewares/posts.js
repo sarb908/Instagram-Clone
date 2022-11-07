@@ -1,38 +1,61 @@
 const PostModel = require("../models/PostModel");
+const cloudinary = require("cloudinary");
 
 const PostsGetItems = async (req, res) => {
-  const queryObj = { ...req.query };
-  console.log(queryObj);
-  const excludedFields = ["_sort", "_order"];
-  excludedFields.forEach((el) => delete queryObj[el]);
-  let Posts;
-  if (req.query._sort != undefined && req.query._order != undefined) {
-    if (req.query._order == "asc") {
-      Posts = PostModel.find(queryObj).sort(req.query._sort);
-      // res.send(Posts);
-    } else {
-      Posts = PostModel.find(queryObj).sort(`-${req.query._sort}`);
-      // res.send(Posts);
-    }
-  } else {
-    Posts = PostModel.find(queryObj);
-    // res.send(Posts);
-    // return;
+  try {
+    const posts = await PostModel.find();
+    return res.status(200).send(posts);
+  } catch (err) {
+    return res.send(400).send(err);
   }
-  ////
-  const page = req.query.page * 1 || 1;
-  const limit = req.query.limit * 1 || 100;
-  const skip = (page - 1) * limit;
-
-  let result = await Posts.skip(skip).limit(limit);
-
-  return res.status(200).send(result);
 };
 
 const PostsPostItems = async (req, res) => {
-  const { name, score, difficulty } = req.body;
-  const obj = new PostModel({ name, score, difficulty });
-  const r = await obj.save();
-  res.send(r);
+  console.log(req);
+  try {
+    const { caption, userName, status, comments } = req.body;
+
+    const files = req.files.photo;
+    cloudinary.uploader.upload(files.tempFilePath, async (result, err) => {
+      console.log(result);
+      const post = new PostModel({
+        userName,
+        caption,
+        img: result.url,
+        status,
+        comments,
+      });
+      const r = await post.save();
+    });
+    return res.send(r);
+  } catch (err) {
+    console.log(err);
+    return res.send(err);
+  }
 };
-module.exports = { PostsGetItems, PostsPostItems };
+
+const PostsPatchItems = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const { status, comments } = req.body;
+    const r = await PostModel.findByIdAndUpdate(id, { comments, status });
+    res.send(r);
+  } catch (err) {
+    res.status(400).send(err);
+  }
+};
+const PostsDeleteItems = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const r = await PostModel.findByIdAndDelete(id);
+    return res.send(r);
+  } catch (err) {
+    return res.status(400).send(err);
+  }
+};
+module.exports = {
+  PostsGetItems,
+  PostsPostItems,
+  PostsPatchItems,
+  PostsDeleteItems,
+};
