@@ -26,8 +26,8 @@ const PostsPostItems = async (req, res) => {
         comments,
       });
       const r = await post.save();
+      return res.send(r);
     });
-    return res.send(r);
   } catch (err) {
     console.log(err);
     return res.send(err);
