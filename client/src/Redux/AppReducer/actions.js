@@ -4,7 +4,7 @@ export const getPostsHandler = () => (dispatch) => {
   dispatch({ type: types.LOADING_POSTS });
 
   return axios
-    .get(`http://localhost:8080/posts`)
+    .get(`https://instaofsarb.herokuapp.com/posts`)
     .then((r) => {
       console.log(r.data);
       return dispatch({ type: types.GET_POSTS, payload: r.data });
@@ -18,7 +18,7 @@ export const addPostsHandler = (formData) => (dispatch) => {
   dispatch({ type: types.LOADING_POSTS });
   return axios({
     method: "post",
-    url: "http://localhost:8080/upload",
+    url: "https://instaofsarb.herokuapp.com/upload",
     data: formData,
     headers: { "Content-Type": "multipart/form-data" },
   })
@@ -36,7 +36,10 @@ export const updatePostHandler =
   (dispatch) => {
     dispatch({ type: types.LOADING_POSTS });
     return axios
-      .patch(`http://localhost:8080/posts/${id}`, { status, comments })
+      .patch(`https://instaofsarb.herokuapp.com/posts/${id}`, {
+        status,
+        comments,
+      })
       .then(() => {
         return dispatch(getPostsHandler());
       })
@@ -49,7 +52,7 @@ export const updatePostHandler =
 export const deletePostHandler = (id) => (dispatch) => {
   dispatch({ type: types.LOADING_POSTS });
   return axios
-    .delete(`http://localhost:8080/posts/${id}`)
+    .delete(`https://instaofsarb.herokuapp.com/posts/${id}`)
     .then(() => {
       return dispatch(getPostsHandler());
     })

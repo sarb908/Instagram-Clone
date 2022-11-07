@@ -4,7 +4,7 @@ import * as types from "./actionTypes";
 export const loginHandler = (data) => (dispatch) => {
   dispatch({ type: types.SIGNIN_LOADING });
   return axios
-    .post(`http://localhost:8080/login`, data)
+    .post(`https://instaofsarb.herokuapp.com/login`, data)
     .then((d) => {
       console.log(d);
       return dispatch({
@@ -23,7 +23,7 @@ export const signupHandler = (data) => (dispatch) => {
   dispatch({ type: types.SIGNIN_LOADING });
 
   return axios
-    .post("http://localhost:8080/signup", data)
+    .post("https://instaofsarb.herokuapp.com/signup", data)
     .then((r) => {
       console.log(r);
       return dispatch({

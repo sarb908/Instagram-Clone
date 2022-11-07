@@ -12,12 +12,10 @@ const Feeds = () => {
     if (posts.length == 0) {
       dispatch(getPostsHandler());
     }
-  }, [posts]);
+  }, []);
   return (
     <Flex direction={"column"} pt="15px">
-      {posts.map((el) => (
-        <Post key={el?._id} item={el} />
-      ))}
+      {posts.map((el) => <Post key={el?._id} item={el} />).reverse()}
     </Flex>
   );
 };
