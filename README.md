@@ -39,7 +39,7 @@
 
 ## Getting Started
 
-This project was built using React v 17.0.2, Redux v 4.1.2, Express, Node js and MongoDB. It is a web application and for running on your local environment you should follow these guidelines.
+This project was built using React v 18.2.0, Redux v 4.2.0, Express, Node js and MongoDB. It is a web application and for running on your local environment you should follow these guidelines.
 
 ### Prerequisites
 
