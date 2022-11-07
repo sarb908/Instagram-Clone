@@ -9,41 +9,54 @@ import {
 import { AiOutlineClose } from "react-icons/ai";
 import { RiChat3Line } from "react-icons/ri";
 import { FaPaperPlane } from "react-icons/fa";
-// import { DotsHorizontalIcon } from "@heroicons/react/solid";
-
 import { MdSentimentVerySatisfied } from "react-icons/md";
+
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+  deletePostHandler,
+  updatePostHandler,
+} from "../Redux/AppReducer/actions";
 
-function Post({ post, user }) {
+function Post({ item }) {
   const [comment, setComment] = useState("");
-  const [comments, setComments] = useState([]);
   const [likes, setLikes] = useState([]);
   const [hasLiked, setHasLiked] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  useEffect(() => {}, []);
-
-  const likePost = async () => {};
-  const addComment = async (e) => {
-    // e.preventDefault();
+  const likePost = () => {
+    dispatch(
+      updatePostHandler({
+        status: !item?.status,
+        comments: item?.comments,
+        id: item?._id,
+      })
+    );
+  };
+  const addComment = (e) => {
+    e.preventDefault();
+    let temp = { userName: "dummyName", comment };
+    dispatch(
+      updatePostHandler({
+        status: item?.status,
+        comments: [...item.comments, temp],
+        id: item?._id,
+      })
+    ).then((r) => setComment(""));
   };
 
-  const visitProfile = () => {};
   const deletePost = () => {
-    // deleteDoc(doc(db, "posts", post.id));
+    dispatch(deletePostHandler(item._id));
   };
   return (
     <PostWrap>
       <HeaderContainer>
-        <img
-          src={`https://images.unsplash.com/photo-1638026884583-29cfb4e47b0f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHx0b3BpYy1mZWVkfDR8cVBZc0R6dkpPWWN8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60`}
-          alt=""
-          onClick={visitProfile}
-        />
-        <p onClick={visitProfile}>{"jashan"}</p>
+        <img src={item?.img} alt="" />
+        <p>{item?.userName ? item.userName : "User"}</p>
         {!isOpen ? (
           <BsThreeDots
             size={26}
@@ -69,13 +82,11 @@ function Post({ post, user }) {
         )}
       </HeaderContainer>
       {/* POST PHOTO */}
-      <PostCoverPhoto
-        src={`https://images.unsplash.com/photo-1638026884583-29cfb4e47b0f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHx0b3BpYy1mZWVkfDR8cVBZc0R6dkpPWWN8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60`}
-      />
+      <PostCoverPhoto src={item?.img} />
       {/* POST OPTIONS */}
       <PostOptions>
         <div style={{ display: "flex", gap: 15, alignItems: "center" }}>
-          {hasLiked ? (
+          {item?.status ? (
             <BsHeartFill
               size={36}
               onClick={likePost}
@@ -100,36 +111,34 @@ function Post({ post, user }) {
       </PostOptions>
       {/* LIKES */}
       <p style={{ paddingLeft: 10 }}>
-        {likes.length > 0 && (
-          <strong>
-            {likes?.length} {likes.length > 1 ? "Likes" : "Like"}
-          </strong>
-        )}
+        <strong>{"1 Like"}</strong>
       </p>
       {/* DETAILS & CAPTION */}
       <p style={{ display: "flex", gap: 10, marginTop: 5, padding: 10 }}>
-        <strong>{`sarb`}</strong>
-        <span>{`123`}</span>
+        <strong>{item?.userName}</strong>
+        <span>{item?.caption}</span>
       </p>
       {/* COMMENTs */}
-      {comments.length !== 0 && (
+
+      {item.comments.length !== 0 && (
         <CommentsContainer>
-          {comments?.map((comment) => (
-            <CommentWrapper key={comment.id}>
+          {item.comments?.map((el) => (
+            <CommentWrapper>
               <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
-                <img src={comment.data().profileImg} alt="" />
-                <h5>
-                  <strong>{comment.data().username}</strong>
-                </h5>
-                <p>{comment.data().comment}</p>
+                <img
+                  src={`https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjYmlp9JDeNMaFZzw9S3G1dVztGqF_2vq9nA&usqp=CAU`}
+                  alt=""
+                />
+                <p style={{ fontWeight: 600 }}>{el?.userName}</p>
+                <p>{el?.comment}</p>
               </div>
 
-              {comment && <p style={{ fontSize: 10, color: "gray" }}></p>}
+              {el && <p style={{ fontSize: 10, color: "gray" }}></p>}
             </CommentWrapper>
           ))}
         </CommentsContainer>
       )}
-      {post && <div style={{ padding: 10, color: "gray", fontSize: 12 }}></div>}
+      {/* {post && <div style={{ padding: 10, color: "gray", fontSize: 12 }}></div>} */}
       {/* ADD COMMENT */}
       <AddCommentContainer>
         <div>
@@ -156,6 +165,7 @@ export default Post;
 const PostWrap = styled.div`
   background-color: #fff;
   margin-bottom: 30px;
+  max-width: 90%;
   border: 1px solid rgb(212 212 212);
 `;
 
@@ -215,11 +225,11 @@ const CommentsContainer = styled.div`
   max-height: 70px;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 10px;
-  margin-left: 35px;
+
+  margin-left: 15px;
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 10px;
   margin-right: 5px;
 
   ::-webkit-scrollbar {
@@ -235,28 +245,28 @@ const CommentsContainer = styled.div`
 const CommentWrapper = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 15px;
+  padding: 0;
+  gap: 8px;
   > div > img {
     object-fit: contain;
     height: 30px;
     border-radius: 9999px;
   }
-  > div > p {
+  > div > p,
+  h2 {
     color: #2d3748;
     font-size: 15px;
     height: 20px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    width: 150px;
 
     @media (min-width: 750px) {
       width: 250px;
     }
   }
   > p {
-    min-width: 50px;
+    min-width: 20px;
     height: 18px;
     overflow: hidden;
     white-space: nowrap;

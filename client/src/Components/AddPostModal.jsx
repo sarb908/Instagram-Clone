@@ -7,53 +7,14 @@ import {
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalFooter,
   ModalBody,
   ModalCloseButton,
   Button,
 } from "@chakra-ui/react";
-
-function AddPost() {
-  return <AddPostWrapper></AddPostWrapper>;
-}
-
-// export default AddPost;
-const AddPostWrapper = styled.div`
-  position: absolute;
-  width: 100%;
-  height: 100vh;
-  top: 0;
-  left: 0;
-  right: 0;
-  background-color: rgba(0, 0, 0, 0.7);
-  display: flex;
-  z-index: 12;
-`;
-const ModalContentWrapper = styled.div`
-  display: flex;
-  margin: auto;
-  background-color: #fff;
-  width: 30%;
-  height: 50vh;
-  min-width: 300px;
-  border-radius: 10px;
-`;
-const ContentContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: auto;
-  > Button {
-    font-weight: 600;
-    width: 60%;
-    padding: 10px;
-    cursor: pointer;
-    margin-top: 5px;
-    border: none;
-    border-radius: 5px;
-  }
-`;
-export default function SizeExample({ isOpen, onClose, onOpen }) {
+import { useDispatch, useSelector } from "react-redux";
+import { addPostsHandler } from "../Redux/AppReducer/actions";
+export default function AddPostModal({ isOpen, onClose, onOpen }) {
+  const dispatch = useDispatch();
   const [user] = useState("");
   const filePickerRef = useRef(null);
   const [caption, setCaption] = useState("");
@@ -67,14 +28,11 @@ export default function SizeExample({ isOpen, onClose, onOpen }) {
 
     const formData = new FormData();
     formData.append("photo", filePickerRef.current.files[0]);
-    formData.append("name", { caption: "jdnv" });
-    const response = await axios({
-      method: "post",
-      url: "http://localhost:8080/upload",
-      data: formData,
-      headers: { "Content-Type": "multipart/form-data" },
+    formData.append("caption", caption);
+    dispatch(addPostsHandler(formData)).then((r) => {
+      console.log(r);
+      onClose();
     });
-    alert(selectedFile);
   };
 
   const addImageToPost = (e) => {
@@ -179,3 +137,38 @@ export default function SizeExample({ isOpen, onClose, onOpen }) {
     </>
   );
 }
+const AddPostWrapper = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  z-index: 12;
+`;
+const ModalContentWrapper = styled.div`
+  display: flex;
+  margin: auto;
+  background-color: #fff;
+  width: 30%;
+  height: 50vh;
+  min-width: 300px;
+  border-radius: 10px;
+`;
+const ContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: auto;
+  > Button {
+    font-weight: 600;
+    width: 60%;
+    padding: 10px;
+    cursor: pointer;
+    margin-top: 5px;
+    border: none;
+    border-radius: 5px;
+  }
+`;

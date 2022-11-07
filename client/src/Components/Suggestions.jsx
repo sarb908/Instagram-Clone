@@ -4,7 +4,7 @@ import UserInfo from "./UserInfo";
 import { Box } from "@chakra-ui/react";
 const Suggestions = () => {
   return (
-    <Box display={["none", "none", "block"]}>
+    <Box display={["none", "none", "none", "block"]}>
       <Widgets>
         <UserInfo />
         <SuggestionsContainer>
